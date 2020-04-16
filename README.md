@@ -1,2 +1,0 @@
-# VizoV
-Vizov aplication
