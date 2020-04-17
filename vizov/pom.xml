@@ -170,7 +170,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>tomcat</server>
-                    <path>/vizov</path>
+                    <path>/vysov</path>
                 </configuration>
             </plugin>
 
