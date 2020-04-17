@@ -1,37 +1,26 @@
 package org.academiadecodigo.bootcamp40.dto;
 
+import org.academiadecodigo.bootcamp40.persistence.model.Challenge;
 import org.academiadecodigo.bootcamp40.persistence.model.LevelType;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDto {
 
-
     private Integer id;
-
-    @NotNull(message = "First name is mandatory")
-    @NotBlank(message = "First name is mandatory")
-    @Size(min = 3, max = 64)
+    @NotNull
+    @NotBlank
     private String userName;
-
-    @Email
-    @NotBlank(message = "Email is mandatory")
     private String email;
-
+    private LevelType level;
+    private String password;
+    private List<Challenge> challenges = new ArrayList<>();
 
     public Integer getId() {
         return id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setId(Integer id) {
@@ -42,8 +31,39 @@ public class UserDto {
         this.userName = userName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public List<Challenge> getChallenges() {
+        return challenges;
+    }
+
+    public LevelType getLevel() {
+        return level;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setLevel(LevelType level) {
+        this.level = level;
+    }
+
+    public void setChallenges(List<Challenge> challenges) {
+        this.challenges = challenges;
+    }
 }

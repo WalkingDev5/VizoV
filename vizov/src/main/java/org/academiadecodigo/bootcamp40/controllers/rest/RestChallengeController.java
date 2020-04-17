@@ -2,20 +2,22 @@ package org.academiadecodigo.bootcamp40.controllers.rest;
 
 import org.academiadecodigo.bootcamp40.converters.ChallengeDtoToChallenge;
 import org.academiadecodigo.bootcamp40.converters.ChallengeToChallengeDto;
+import org.academiadecodigo.bootcamp40.dto.ChallengeDto;
 import org.academiadecodigo.bootcamp40.persistence.model.Challenge;
-import org.academiadecodigo.bootcamp40.services.ChallengeServiceImp;
 import org.academiadecodigo.bootcamp40.services.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/challenge")
-public class RestChallengesController {
+public class RestChallengeController {
 
     private UserServiceImp userServiceImp;
-    private ChallengeServiceImp challengeServiceImp;
     private ChallengeToChallengeDto challengeToChallengeDto;
     private ChallengeDtoToChallenge challengeDtoToChallenge;
 
@@ -25,8 +27,8 @@ public class RestChallengesController {
     }
 
     @Autowired
-    public void setChallengeServiceImp(ChallengeServiceImp challengeServiceImp) {
-        this.challengeServiceImp = challengeServiceImp;
+    public void setChallengeToChallengeDto(ChallengeToChallengeDto challengeToChallengeDto) {
+        this.challengeToChallengeDto = challengeToChallengeDto;
     }
 
     @Autowired
@@ -34,16 +36,22 @@ public class RestChallengesController {
         this.challengeDtoToChallenge = challengeDtoToChallenge;
     }
 
-    @Autowired
-    public void setChallengeToChallengeDto(ChallengeToChallengeDto challengeToChallengeDto) {
-        this.challengeToChallengeDto = challengeToChallengeDto;
-    }
-
     @GetMapping("/{id}")
-    public String showChallenge(@PathVariable Integer id, Model model) {
+    public ResponseEntity<ChallengeDto> showChallenge(@PathVariable Integer id){
 
         Challenge challenge = userServiceImp.getNewChallenge(userServiceImp.getById(id));
-        model.addAttribute("challenge", challengeToChallengeDto.convert(challenge));
-        return "description";
+
+        if (challenge == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(challengeToChallengeDto.convert(challenge), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}")
+    public void addCompletedChallenge(@PathVariable Integer id, @Valid @RequestBody ChallengeDto challengeDto) {
+
+        Challenge savedChallenge = challengeDtoToChallenge.convert(challengeDto);
+        userServiceImp.completedChallenge(id, savedChallenge);
     }
 }
