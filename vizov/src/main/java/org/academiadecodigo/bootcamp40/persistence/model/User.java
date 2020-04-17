@@ -14,28 +14,19 @@ public class User extends AbstractModel {
     private String userName;
     private String email;
     private LevelType level;
+    private String password;
 
     @ManyToMany(
-
             fetch = FetchType.EAGER
     )
-
-    private List<Challenge> challenges = new ArrayList<Challenge>();
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
+    private List<Challenge> challenges = new ArrayList<>();
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getEmail() {
+        return email;
     }
 
     public List<Challenge> getChallenges() {
@@ -46,8 +37,24 @@ public class User extends AbstractModel {
         return level;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setLevel(LevelType level) {
         this.level = level;
+    }
+
+    public void setLevel(){
+        level = LevelType.LEVEL_1;
     }
 
     public void addChallenge(Challenge challenge){
